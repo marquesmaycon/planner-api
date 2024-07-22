@@ -1,6 +1,9 @@
 import Activity from '#models/activity'
+import Trip from '#models/trip'
 import { activityValidator } from '#validators/activity'
 import type { HttpContext } from '@adonisjs/core/http'
+import { DateTime } from 'luxon'
+
 
 export default class ActivitiesController {
   /**
@@ -9,8 +12,18 @@ export default class ActivitiesController {
   async index({ params, response }: HttpContext) {
     const { trip_id } = params
 
-    const activites = Activity.query().where({ trip_id })
-    return response.ok(activites)
+    const trip = await Trip.findOrFail(trip_id)
+    const tripDays = DateTime.fromISO(trip.ends_at).diff(DateTime.fromISO(trip.starts_at), 'days').days
+    const allActivities = await Activity.query().where({ trip_id }).orderBy('starts_at', 'desc')
+
+    const activitiesByDay = Array.from({ length: tripDays + 1 }, (_, i) => {
+      const date = DateTime.fromISO(trip.starts_at).plus({ days: i }).toISODate()
+      const activities = allActivities.filter(activity => DateTime.fromISO(activity.starts_at).toISODate() === date)
+
+      return { date, activities }
+    })
+
+    return response.ok(activitiesByDay)
   }
 
   /**
@@ -52,7 +65,24 @@ export default class ActivitiesController {
 
     const activity = await Activity.findOrFail(id)
     await activity.delete()
-    
+
     return response.noContent()
+  }
+
+  async getActivitiesByDay({ params, response }: HttpContext) {
+    const { trip_id } = params
+
+    const trip = await Trip.findOrFail(trip_id)
+    const tripDays = DateTime.fromISO(trip.ends_at).diff(DateTime.fromISO(trip.starts_at), 'days').days
+    const allActivities = await Activity.query().where({ trip_id }).orderBy('starts_at', 'desc')
+
+    const activitiesByDay = Array.from({ length: tripDays + 1 }, (_, i) => {
+      const date = DateTime.fromISO(trip.starts_at).plus({ days: i }).toISODate()
+      const activities = allActivities.filter(activity => DateTime.fromISO(activity.starts_at).toISODate() === date)
+
+      return { date, activities }
+    })
+
+    return response.ok(activitiesByDay)
   }
 }

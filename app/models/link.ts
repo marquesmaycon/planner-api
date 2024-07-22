@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 
 import Trip from './trip.js'
 
-export default class Participant extends BaseModel {
+export default class Link extends BaseModel {
   @column({ isPrimary: true })
   declare id: number
 
@@ -12,16 +12,16 @@ export default class Participant extends BaseModel {
   declare trip_id: number
 
   @column()
-  declare name: string
+  declare title: string | null
 
   @column()
-  declare email: string
+  declare url: string
 
   @column.dateTime({ autoCreate: true })
-  declare created_at: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updated_at: DateTime
+  declare updatedAt: DateTime
 
   @belongsTo(() => Trip, { foreignKey: 'id' })
   declare trip: BelongsTo<typeof Trip>

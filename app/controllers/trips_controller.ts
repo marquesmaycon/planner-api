@@ -8,21 +8,20 @@ export default class TripsController {
    */
   async store({ request, response }: HttpContext) {
     const payload = await request.validateUsing(createTripValidator)
-    const { destination, starts_at, ends_at, owner_email, owner_name, emails_to_invite } = payload
-    
+
+    const { emails_to_invite, ...tripPayload } = payload
+    const { owner_name, owner_email, starts_at, ends_at } = tripPayload
+
     const trip = await Trip.create({
-      destination: destination,
+      ...tripPayload,
       starts_at: new Date(starts_at).toISOString(),
       ends_at: new Date(ends_at).toISOString(),
-      owner_name: owner_name,
-      owner_email: owner_email,
     })
 
     const emails = emails_to_invite.map((email) => ({ email }))
     const ownerData = { name: owner_name, email: owner_email }
-
-    await trip.related('participants').createMany([...emails, ownerData])
-    await trip.load('participants')
+    emails.unshift(ownerData)
+    await trip.related('participants').createMany(emails)
 
     return response.created(trip)
   }

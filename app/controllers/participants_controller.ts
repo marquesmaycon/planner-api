@@ -3,11 +3,10 @@ import { participantValidator } from '#validators/participant'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ParticipantsController {
-
   /**
    * Display a list of resource
    */
-  async index({ request, response, params }: HttpContext) {
+  async index({ response, params }: HttpContext) {
     const { trip_id } = params
 
     const participants = await Participant.query().where({ trip_id })
