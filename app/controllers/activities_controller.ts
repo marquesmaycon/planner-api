@@ -1,6 +1,6 @@
 import Activity from '#models/activity'
 import Trip from '#models/trip'
-import { activityValidator } from '#validators/activity'
+import { createActivityValidator, editActivityValidator } from '#validators/activity'
 import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 
@@ -31,7 +31,7 @@ export default class ActivitiesController {
    */
   async store({ params, request, response }: HttpContext) {
     const { trip_id } = params
-    const payload = await request.validateUsing(activityValidator)
+    const payload = await request.validateUsing(createActivityValidator)
 
     const activity = await Activity.create({ ...payload, tripId: trip_id })
 
@@ -48,7 +48,7 @@ export default class ActivitiesController {
    */
   async update({ params, request, response }: HttpContext) {
     const { id } = params
-    const payload = await request.validateUsing(activityValidator)
+    const payload = await request.validateUsing(editActivityValidator)
 
     const activity = await Activity.findOrFail(id)
     activity.merge(payload)
