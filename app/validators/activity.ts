@@ -7,6 +7,6 @@ import vine from '@vinejs/vine'
 export const activityValidator = vine.compile(
   vine.object({
     name: vine.string(),
-    starts_at: vine.string(),
+    startsAt: vine.string(),
   })
 )

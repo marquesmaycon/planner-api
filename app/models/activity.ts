@@ -9,22 +9,22 @@ export default class Activity extends BaseModel {
   declare id: number
 
   @column()
-  declare trip_id: number
+  declare tripId: number
 
   @column()
   declare name: string
 
   @column()
-  declare starts_at: string
+  declare startsAt: string
 
   @column()
-  declare is_done: boolean
+  declare isDone: boolean
 
   @column.dateTime({ autoCreate: true })
-  declare created_at: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updated_at: DateTime
+  declare updatedAt: DateTime
 
   @belongsTo(() => Trip, { foreignKey: 'id' })
   declare trip: BelongsTo<typeof Trip>

@@ -2,11 +2,11 @@ import vine, { SimpleMessagesProvider } from '@vinejs/vine'
 
 export const createTripValidator = vine.compile(vine.object({
   destination: vine.string(),
-  starts_at: vine.string(),
-  ends_at: vine.string(),
+  startsAt: vine.string(),
+  endsAt: vine.string(),
   emails_to_invite: vine.array(vine.string()),
-  owner_name: vine.string(),
-  owner_email: vine.string(),
+  ownerName: vine.string(),
+  ownerEmail: vine.string(),
 }))
 
 const messages = {

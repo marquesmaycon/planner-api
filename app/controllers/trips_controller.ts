@@ -10,16 +10,16 @@ export default class TripsController {
     const payload = await request.validateUsing(createTripValidator)
 
     const { emails_to_invite, ...tripPayload } = payload
-    const { owner_name, owner_email, starts_at, ends_at } = tripPayload
+    const { ownerName, ownerEmail, startsAt, endsAt } = tripPayload
 
     const trip = await Trip.create({
       ...tripPayload,
-      starts_at: new Date(starts_at).toISOString(),
-      ends_at: new Date(ends_at).toISOString(),
+      startsAt: new Date(startsAt).toISOString(),
+      endsAt: new Date(endsAt).toISOString(),
     })
 
     const emails = emails_to_invite.map((email) => ({ email }))
-    const ownerData = { name: owner_name, email: owner_email }
+    const ownerData = { name: ownerName, email: ownerEmail }
     emails.unshift(ownerData)
     await trip.related('participants').createMany(emails)
 

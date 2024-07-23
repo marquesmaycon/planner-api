@@ -12,22 +12,22 @@ export default class Trip extends BaseModel {
   declare destination: string
 
   @column()
-  declare starts_at: string
+  declare startsAt: string
 
   @column()
-  declare ends_at: string
+  declare endsAt: string
 
   @column()
-  declare owner_name: string
+  declare ownerName: string
 
   @column()
-  declare owner_email: string
+  declare ownerEmail: string
 
   @column.dateTime({ autoCreate: true })
-  declare created_at: DateTime
+  declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updated_at: DateTime
+  declare updatedAt: DateTime
   
   @hasMany(() => Participant, { foreignKey: 'trip_id' })
   declare participants: HasMany<typeof Participant>

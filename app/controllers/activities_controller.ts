@@ -13,12 +13,12 @@ export default class ActivitiesController {
     const { trip_id } = params
 
     const trip = await Trip.findOrFail(trip_id)
-    const tripDays = DateTime.fromISO(trip.ends_at).diff(DateTime.fromISO(trip.starts_at), 'days').days
-    const allActivities = await Activity.query().where({ trip_id }).orderBy('starts_at', 'desc')
+    const tripDays = DateTime.fromISO(trip.endsAt).diff(DateTime.fromISO(trip.startsAt), 'days').days
+    const allActivities = await Activity.query().where({ trip_id }).orderBy('startsAt', 'desc')
 
     const activitiesByDay = Array.from({ length: tripDays + 1 }, (_, i) => {
-      const date = DateTime.fromISO(trip.starts_at).plus({ days: i }).toISODate()
-      const activities = allActivities.filter(activity => DateTime.fromISO(activity.starts_at).toISODate() === date)
+      const date = DateTime.fromISO(trip.startsAt).plus({ days: i }).toISODate()
+      const activities = allActivities.filter(activity => DateTime.fromISO(activity.startsAt).toISODate() === date)
 
       return { date, activities }
     })
@@ -33,7 +33,7 @@ export default class ActivitiesController {
     const { trip_id } = params
     const payload = await request.validateUsing(activityValidator)
 
-    const activity = await Activity.create({ ...payload, trip_id })
+    const activity = await Activity.create({ ...payload, tripId: trip_id })
 
     return response.created(activity)
   }
@@ -73,16 +73,17 @@ export default class ActivitiesController {
     const { trip_id } = params
 
     const trip = await Trip.findOrFail(trip_id)
-    const tripDays = DateTime.fromISO(trip.ends_at).diff(DateTime.fromISO(trip.starts_at), 'days').days
-    const allActivities = await Activity.query().where({ trip_id }).orderBy('starts_at', 'desc')
+    const tripDays = DateTime.fromISO(trip.endsAt).diff(DateTime.fromISO(trip.startsAt), 'days').days
+    const allActivities = await Activity.query().where({ trip_id: trip_id }).orderBy('startsAt', 'desc')
 
     const activitiesByDay = Array.from({ length: tripDays + 1 }, (_, i) => {
-      const date = DateTime.fromISO(trip.starts_at).plus({ days: i }).toISODate()
-      const activities = allActivities.filter(activity => DateTime.fromISO(activity.starts_at).toISODate() === date)
-
+      const date = DateTime.fromISO(trip.startsAt).plus({ days: i }).toISODate()
+      const activities = allActivities.filter(activity => DateTime.fromISO(activity.startsAt).toISODate() === date)
       return { date, activities }
     })
+    const currentTimeZone = DateTime.local().zoneName;
 
+    console.log(`Fuso horário atual: ${currentTimeZone}`);
     return response.ok(activitiesByDay)
   }
 }
