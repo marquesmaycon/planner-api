@@ -11,6 +11,7 @@ export default class extends BaseSchema {
 
       table.string('name').nullable()
       table.string('email')
+      table.boolean('is_confirmed').defaultTo(false)
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

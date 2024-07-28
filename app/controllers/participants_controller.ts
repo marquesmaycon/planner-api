@@ -1,5 +1,5 @@
 import Participant from '#models/participant'
-import { participantValidator } from '#validators/participant'
+import { createParticipantValidator, editParticipantValidator } from '#validators/participant'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ParticipantsController {
@@ -19,7 +19,7 @@ export default class ParticipantsController {
    */
   async store({ request, response, params }: HttpContext) {
     const { trip_id } = params
-    const payload = await request.validateUsing(participantValidator)
+    const payload = await request.validateUsing(createParticipantValidator)
 
     const participant = await Participant.create({ ...payload, trip_id })
 
@@ -31,7 +31,7 @@ export default class ParticipantsController {
    */
   async update({ params, response, request }: HttpContext) {
     const { id } = params
-    const payload = await request.validateUsing(participantValidator)
+    const payload = await request.validateUsing(editParticipantValidator)
 
     const participant = await Participant.findOrFail(id)
     participant.merge(payload)

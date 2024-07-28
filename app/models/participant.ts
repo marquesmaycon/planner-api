@@ -17,6 +17,9 @@ export default class Participant extends BaseModel {
   @column()
   declare email: string
 
+  @column()
+  declare isConfirmed: boolean
+
   @column.dateTime({ autoCreate: true })
   declare created_at: DateTime
 

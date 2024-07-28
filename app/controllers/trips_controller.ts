@@ -1,5 +1,5 @@
 import Trip from '#models/trip'
-import { createTripValidator } from '#validators/trip'
+import { createTripValidator, editTripValidator } from '#validators/trip'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class TripsController {
@@ -34,10 +34,22 @@ export default class TripsController {
     return response.ok(trip)
   }
 
-  // /**
-  //  * Handle form submission for the edit action
-  //  */
-  // async update({ params, request }: HttpContext) {}
+  /**
+   * Handle form submission for the edit action
+   */
+  async update({ params, request }: HttpContext) {
+    const payload = await request.validateUsing(editTripValidator)
+
+    const trip = await Trip.findOrFail(params.id)
+    trip.merge({
+      ...payload,
+      startsAt: new Date(payload.startsAt).toISOString(),
+      endsAt: new Date(payload.endsAt).toISOString(),
+    })
+    await trip.save()
+
+    return trip
+  }
 
   // /**
   //  * Delete record
