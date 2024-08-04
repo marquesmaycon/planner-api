@@ -19,8 +19,10 @@ import { middleware } from './kernel.js'
 router.group(() => {
   router.post('register', [AuthController, 'register'])
   router.post('login', [AuthController, 'login'])
-  router.delete('logout', [AuthController, 'logout']).use(middleware.auth())
-  router.get('me', [AuthController, 'me'])
+  router.group(() => {
+    router.delete('logout', [AuthController, 'logout'])
+    router.get('me', [AuthController, 'me'])
+  }).use(middleware.auth())
 }).prefix('auth')
 
 router.group(() => {

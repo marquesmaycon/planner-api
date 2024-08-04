@@ -3,26 +3,35 @@ import { createTripValidator, editTripValidator } from '#validators/trip'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class TripsController {
+  async index({ auth, response }: HttpContext) {
+    const trips = await Trip.query().where('ownerEmail', auth.user!.email)
+    return response.ok(trips)
+  }
   /**
    * Handle form submission for the create action
    */
-  async store({ request, response }: HttpContext) {
+  async store({ auth, request, response }: HttpContext) {
     const payload = await request.validateUsing(createTripValidator)
 
     const { emails_to_invite, ...tripPayload } = payload
-    const { ownerName, ownerEmail, startsAt, endsAt } = tripPayload
+    const { startsAt, endsAt } = tripPayload
+
+    const owner = {
+      name: auth.user!.name,
+      email: auth.user!.email,
+    }
 
     const trip = await Trip.create({
       ...tripPayload,
+      ownerName: owner.name,
+      ownerEmail: owner.email,
       startsAt: new Date(startsAt).toISOString(),
       endsAt: new Date(endsAt).toISOString(),
     })
 
     const emails = emails_to_invite.map((email) => ({ email }))
-    const ownerData = { name: ownerName, email: ownerEmail }
-    emails.unshift(ownerData)
+    emails.unshift(owner)
     await trip.related('participants').createMany(emails)
-
     return response.created(trip)
   }
 
