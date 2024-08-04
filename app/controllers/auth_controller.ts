@@ -16,7 +16,7 @@ export default class AuthController {
     const { email, password } = await request.validateUsing(loginValidator)
 
     const user = await User.verifyCredentials(email, password)
-    
+
     return User.accessTokens.create(user)
   }
 
@@ -25,12 +25,12 @@ export default class AuthController {
 
     await User.accessTokens.delete(user, user?.currentAccessToken.identifier)
 
-    return response.noContent()
+    return response.ok({ message: 'Logged out successfully' })
   }
 
   public async me({ auth, response }: HttpContext) {
     await auth.check()
 
-    return response.ok({ user: auth.user })
+    return response.ok(auth.user)
   }
 }
