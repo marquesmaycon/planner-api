@@ -9,7 +9,7 @@ export default class LinksController {
   async index({ params, response }: HttpContext) {
     const { trip_id } = params
 
-    const links = await Link.query().where({ trip_id })
+    const links = await Link.query().where({ tripId: trip_id })
     return response.ok(links)
   }
 
@@ -20,7 +20,7 @@ export default class LinksController {
     const { trip_id } = params
     const payload = await request.validateUsing(linkValidator)
 
-    const link = await Link.create({ ...payload, trip_id })
+    const link = await Link.create({ ...payload, tripId: trip_id })
 
     return response.created(link)
   }

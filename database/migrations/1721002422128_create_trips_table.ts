@@ -10,8 +10,7 @@ export default class extends BaseSchema {
       table.string('destination')
       table.date('starts_at')
       table.date('ends_at')
-      table.string('owner_name')
-      table.string('owner_email')
+      table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
 
       table.timestamp('created_at')
       table.timestamp('updated_at')

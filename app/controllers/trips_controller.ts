@@ -4,7 +4,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 export default class TripsController {
   async index({ auth, response }: HttpContext) {
-    const trips = await Trip.query().where('ownerEmail', auth.user!.email)
+    const trips = await Trip.query().where({ userId: auth.user!.id })
     return response.ok(trips)
   }
   /**
@@ -23,8 +23,6 @@ export default class TripsController {
 
     const trip = await Trip.create({
       ...tripPayload,
-      ownerName: owner.name,
-      ownerEmail: owner.email,
       startsAt: new Date(startsAt).toISOString(),
       endsAt: new Date(endsAt).toISOString(),
     })

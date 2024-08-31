@@ -14,7 +14,7 @@ export default class ActivitiesController {
 
     const trip = await Trip.findOrFail(trip_id)
     const tripDays = DateTime.fromISO(trip.endsAt).diff(DateTime.fromISO(trip.startsAt), 'days').days
-    const allActivities = await Activity.query().where({ trip_id }).orderBy('startsAt', 'desc')
+    const allActivities = await Activity.query().where({ tripId: trip_id }).orderBy('startsAt', 'desc')
 
     const activitiesByDay = Array.from({ length: tripDays + 1 }, (_, i) => {
       const date = DateTime.fromISO(trip.startsAt).plus({ days: i }).toISODate()

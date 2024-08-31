@@ -9,7 +9,7 @@ export default class ParticipantsController {
   async index({ response, params }: HttpContext) {
     const { trip_id } = params
 
-    const participants = await Participant.query().where({ trip_id })
+    const participants = await Participant.query().where({ tripId: trip_id })
 
     return response.ok(participants)
   }
@@ -21,7 +21,7 @@ export default class ParticipantsController {
     const { trip_id } = params
     const payload = await request.validateUsing(createParticipantValidator)
 
-    const participant = await Participant.create({ ...payload, trip_id })
+    const participant = await Participant.create({ ...payload, tripId: trip_id })
 
     return response.created(participant)
   }

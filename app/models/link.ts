@@ -9,7 +9,7 @@ export default class Link extends BaseModel {
   declare id: number
 
   @column()
-  declare trip_id: number
+  declare tripId: number
 
   @column()
   declare title: string | null
