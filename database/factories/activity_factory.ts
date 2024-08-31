@@ -12,9 +12,4 @@ export const ActivityFactory = factory
   })
   .relation('trip', () => TripFactory)
   .state('mine', row => row.tripId = 1)
-  .state('soon', async (row, { faker }) => {
-    const trip = await row.related('trip').query().first()
-    const start = faker.date.between({ from: trip!.startsAt, to: trip!.endsAt})
-    row.startsAt = start.toISOString()
-  })
   .build()

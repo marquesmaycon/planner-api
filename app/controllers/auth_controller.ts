@@ -9,7 +9,7 @@ export default class AuthController {
 
     const user = await User.create(data)
 
-    return User.accessTokens.create(user)
+    return User.accessTokens.create(user, ['*'], { expiresIn: '1 day' })
   }
 
   public async login({ request }: HttpContext) {

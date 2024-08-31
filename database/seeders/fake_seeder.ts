@@ -1,6 +1,9 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 
 import { UserFactory } from "#database/factories/user_factory"
+import { ActivityFactory } from "#database/factories/activity_factory"
+import { faker } from '@faker-js/faker';
+import Trip from "#models/trip";
 
 export default class extends BaseSeeder {
   static environment = ['development']
@@ -15,13 +18,29 @@ export default class extends BaseSeeder {
       )
       .create()
 
-    await UserFactory
+    const users = await UserFactory
       .with('trips', 3, trip => trip
         .apply('soon')
-        .with('activities', 4, act => act.apply('soon'))
         .with('links', 2)
         .with('participants', 3)
       )
       .createMany(5)
+
+    await Promise.all(users.map(async user => {
+      const trips = await user.related('trips').query().select('id', 'startsAt', 'endsAt')
+      await Promise.all(trips.map(this.createActivityForTrip))
+    }))
+  }
+
+  async createActivityForTrip({ id, startsAt, endsAt }: Trip) {
+    const activitiesNumber = faker.number.int({ min: 3, max: 6 })
+    const starts = faker.date.between({ from: startsAt, to: endsAt })
+
+    const fakeData = Array.from({ length: activitiesNumber }, () => ({
+      tripId: id,
+      startsAt: starts.toISOString()
+    }))
+
+    await ActivityFactory.merge(fakeData).createMany(activitiesNumber)
   }
 }

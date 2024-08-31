@@ -8,8 +8,9 @@ import { DateTime } from "luxon"
 
 export const TripFactory = factory
   .define(Trip, async ({ faker }) => {
-    const start = faker.date.soon({ days: Math.floor(Math.random() * 15) })
-    const end = DateTime.fromJSDate(start).plus({ days: Math.floor(Math.random() * 15) })
+    const start = faker.date.soon({ days: faker.number.int({ min: 1, max: 15 }) })
+    const end = DateTime.fromJSDate(start).plus({ days: faker.number.int({ min: 1, max: 15 }) })
+
     return {
       destination: faker.location.city(),
       startsAt: start.toISOString(),
@@ -21,8 +22,9 @@ export const TripFactory = factory
   .relation('activities', () => ActivityFactory)
   .relation('links', () => LinkFactory)
   .state('soon', (row, { faker }) => {
-    const start = faker.date.soon({ days: Math.floor(Math.random() * 15) })
-    const end = DateTime.fromJSDate(start).plus({ days: Math.floor(Math.random() * 15) })
+    const start = faker.date.soon({ days: faker.number.int({ min: 1, max: 15 }) })
+    const end = DateTime.fromJSDate(start).plus({ days: faker.number.int({ min: 1, max: 15 }) })
+
     row.startsAt = start.toISOString()
     row.endsAt = end.toISO()!
   })
