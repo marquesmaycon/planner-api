@@ -78,12 +78,14 @@ export default class ActivitiesController {
 
     const activitiesByDay = Array.from({ length: tripDays + 1 }, (_, i) => {
       const date = DateTime.fromISO(trip.startsAt).plus({ days: i }).toISODate()
-      const activities = allActivities.filter(activity => DateTime.fromISO(activity.startsAt).toISODate() === date)
+      const activities = allActivities
+        .filter(activity => DateTime.fromISO(activity.startsAt).toISODate() === date)
+        .sort((a, b) => {
+          return a.startsAt > b.startsAt ? 1 : -1
+        })
       return { date, activities }
     })
-    const currentTimeZone = DateTime.local().zoneName;
 
-    console.log(`Fuso horário atual: ${currentTimeZone}`);
     return response.ok(activitiesByDay)
   }
 }

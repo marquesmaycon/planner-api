@@ -9,7 +9,7 @@ export default class extends BaseSeeder {
   static environment = ['development']
 
   async run() {
-    await UserFactory.apply('me')
+    const me = await UserFactory.apply('me')
       .with('trips', 5, trip => trip
         .apply('mine', 'soon')
         .with('activities', 6, act => act.apply('mine'))
@@ -17,6 +17,9 @@ export default class extends BaseSeeder {
         .with('participants', 4)
       )
       .create()
+
+    const myTrips = await me.related('trips').query().select('id', 'startsAt', 'endsAt')
+    await Promise.all(myTrips.map(this.setActivityDate))
 
     const users = await UserFactory
       .with('trips', 3, trip => trip
@@ -32,14 +35,23 @@ export default class extends BaseSeeder {
     }))
   }
 
+  async setActivityDate(trip: Trip) {
+    const activities = await trip.related('activities').query()
+    await Promise.all(activities.map(act => {
+      const startsAt = faker.date.between({ from: trip.startsAt, to: trip.endsAt })
+      return act.merge({ startsAt: startsAt.toISOString() }).save()
+    }))
+  }
+
   async createActivityForTrip({ id, startsAt, endsAt }: Trip) {
     const activitiesNumber = faker.number.int({ min: 3, max: 6 })
-    const starts = faker.date.between({ from: startsAt, to: endsAt })
-
-    const fakeData = Array.from({ length: activitiesNumber }, () => ({
-      tripId: id,
-      startsAt: starts.toISOString()
-    }))
+    const fakeData = Array.from({ length: activitiesNumber }, () => {
+      const starts = faker.date.between({ from: startsAt, to: endsAt })
+      return {
+        tripId: id,
+        startsAt: starts.toISOString()
+      }
+    })
 
     await ActivityFactory.merge(fakeData).createMany(activitiesNumber)
   }

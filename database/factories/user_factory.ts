@@ -7,7 +7,7 @@ export const UserFactory = factory
     return {
       name: faker.person.fullName(),
       email: faker.internet.email(),
-      password: faker.internet.password(),
+      password: '123456',
     }
   })
   .relation('trips', () => TripFactory)
