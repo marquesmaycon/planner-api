@@ -38,11 +38,6 @@ export default class ActivitiesController {
     return response.created(activity)
   }
 
-  // /**
-  //  * Show individual record
-  //  */
-  // async show({ params }: HttpContext) {}
-
   /**
    * Handle form submission for the edit action
    */

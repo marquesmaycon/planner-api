@@ -12,7 +12,7 @@ export const UserFactory = factory
   })
   .relation('trips', () => TripFactory)
   .state('me', (user) => {
-    user.email = 'mayconmarquesh@gmail.com'
+    user.email = 'maycon@mail.com'
     user.password = '123456'
   })
   .build()

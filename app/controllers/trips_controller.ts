@@ -61,5 +61,8 @@ export default class TripsController {
   // /**
   //  * Delete record
   //  */
-  // async destroy({ params }: HttpContext) {}
+  async destroy({ params }: HttpContext) {
+    const trip = await Trip.findOrFail(params.id)
+    await trip.delete()
+  }
 }
