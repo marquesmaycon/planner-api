@@ -1,67 +1,81 @@
-# Planejador de Viagens - Backend
+# Planner API
 
-Este é o backend do projeto **Planejador de Viagens**, originalmente desenvolvido durante o evento **Rocketseat NLW 2024**. O projeto foi estendido com novas funcionalidades e melhorias para oferecer uma experiência mais completa.
+API para planejamento de viagens, desenvolvida com AdonisJS e banco relacional para organizar roteiros, atividades e participantes.
 
-## Novas Funcionalidades
+![AdonisJS](https://img.shields.io/badge/AdonisJS-20232A?style=flat-square)
+![TypeScript](https://img.shields.io/badge/TypeScript-20232A?style=flat-square)
+![Lucid ORM](https://img.shields.io/badge/Lucid_ORM-20232A?style=flat-square)
+![SQLite](https://img.shields.io/badge/SQLite-20232A?style=flat-square)
+![VineJS](https://img.shields.io/badge/VineJS-20232A?style=flat-square)
+![Japa](https://img.shields.io/badge/Japa-20232A?style=flat-square)
 
-- **Criação de Conta**: Permite que novos usuários se cadastrem na plataforma.
-- **Login com Autenticação**: Autenticação segura utilizando **Access Tokens**.
-- **CRUD Completo dos Recursos da Viagem**:
-  - **Local**
-  - **Dias da viagem**
-  - **Atividades**
-  - **Links**
-  - **Participantes**
-- **Validações**: Todas as entradas são validadas para garantir a integridade dos dados.
-- **Migrations, Seeders e Factories**: Facilita o gerenciamento e a configuração do banco de dados.
+## Demo
 
-## Tecnologias Utilizadas
-- **AdonisJS 6**: Framework backend para Node.js.
-- **TypeScript**: Linguagem principal do projeto.
-- **Node.js**: Ambiente de execução.
-- **Lucid**: ORM para interagir com o banco de dados.
-- **VineJS**: Biblioteca de validação de dados.
-- **SQLite**: Banco de dados simples para facilitar a execução do projeto
+Este projeto nao possui demo publica ativa no momento.
 
-## Pré-requisitos
+## Sobre
 
-- **Node.js** >= 20.6
-- **NPM**
+API para planejamento de viagens, desenvolvida com AdonisJS e banco relacional para organizar roteiros, atividades e participantes.
 
-## Instalação
+O objetivo deste repositorio e demonstrar uma implementacao clara, organizada e facil de avaliar, com documentacao objetiva para recrutadores e pessoas tecnicas entenderem rapidamente o contexto do projeto.
 
-1. **Clone o repositório**:
+## Funcionalidades
+
+- API REST.
+- Planejamento de viagens.
+- Rotas de recursos.
+- Validacoes.
+- Persistencia relacional.
+- Testes.
+
+## Stack
+
+- **AdonisJS**
+- **TypeScript**
+- **Lucid ORM**
+- **SQLite**
+- **VineJS**
+- **Japa**
+
+## Como executar
 
 ```bash
-git clone https://https://github.com/marquesmaycon/planner-api
-```
-
-
-2. **Instale as dependências:**
-```
-# Com NPM
-npm i
-```
-
-3. **Migrations e Seeders:**
-```
-# Rode as migrações (criação das tabelas)
-node ace migration:run
-
-# Popule o banco de dados
-node ace db:seed
-```
-
-4. **Inicie o servidor em ambiente de desenvolvimento**
-```
+git clone https://github.com/marquesmaycon/planner-api.git
+cd planner-api
+npm install
 npm run dev
 ```
 
-## Observações
-> Os testes automatizados ainda não implementados
->
-> Usuários para testes (todos com a senha: ```123456```)
-> * ```fulano@mail.com```
-> * ```ciclano@mail.com```
-> * ```beltrana@mail.com```
+## Scripts disponiveis
 
+- `npm run start`
+- `npm run build`
+- `npm run dev`
+- `npm run test`
+- `npm run lint`
+- `npm run format`
+- `npm run typecheck`
+
+## Destaques tecnicos
+
+- Backend estruturado com AdonisJS.
+- Tema de produto claro.
+- Boa base para demonstrar APIs.
+
+## Repositorio
+
+[Acessar repositorio no GitHub](https://github.com/marquesmaycon/planner-api)
+
+---
+
+<div align="center">
+  <img src="https://github.com/marquesmaycon.png" width="100px" style="border-radius: 50%"/>
+  <br/>
+  <strong>Maycon Marques</strong>
+  <br/>
+  <br/>
+
+  [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mayconhenrique/)
+  [![GitHub](https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white)](https://github.com/marquesmaycon)
+  [![Email](https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:mayconmarquesh@gmail.com)
+</div>
